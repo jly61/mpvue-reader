@@ -1,0 +1,15 @@
+{
+  "pages": [
+    "pages/index/main"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "61读书",
+    "navigationBarTextStyle": "black"
+  },
+  "usingComponents": {
+    "van-button": "vant-weapp/dist/button/index",
+    "van-icon": "vant-weapp/dist/icon/index"
+  }
+}
