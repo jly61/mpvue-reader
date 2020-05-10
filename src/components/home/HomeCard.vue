@@ -3,23 +3,17 @@
     <div class="home-card-inner">
       <div class="user-info">
         <div class="avatar-wrapper">
-          <ImageView src="https://www.youbaobao.xyz/mpvue-res/logo.jpg" round/>
+          <ImageView :src="avatar" round/>
         </div>
-        <div class="nickname">{{'米老鼠'}}</div>
-        <div class="shelf-text">书架共有{{3}}本好书</div>
+        <div class="nickname">{{nickname}}</div>
+        <div class="shelf-text">书架共有{{data.num}}本好书</div>
         <div class="round-item"></div>
         <div class="shelf-text">特别精选</div>
       </div>
       <div class="book-info">
-        <div class="book-wrapper">
-          <div class="book-img-wrapper">
-            <ImageView src="https://www.youbaobao.xyz/book/res/img//EarthSciences/978-981-10-3713-9_CoverFigure.jpg"/>
-          </div>
-          <div class="book-img-wrapper">
-            <ImageView src="https://www.youbaobao.xyz/book/res/img//EarthSciences/978-981-10-3713-9_CoverFigure.jpg"/>
-          </div>
-          <div class="book-img-wrapper">
-            <ImageView src="https://www.youbaobao.xyz/book/res/img//EarthSciences/978-981-10-3713-9_CoverFigure.jpg"/>
+        <div class="book-wrapper" v-for="(book, index) in bookList" :key="index">
+          <div class="book-img-wrapper" @click="onBookClick">
+            <ImageView :src="book.cover"/>
           </div>
         </div>
         <div class="shelf-wrapper">
@@ -42,6 +36,21 @@
     components: {
       ImageView
     },
+    computed: {
+      avatar() {
+        if (this.data && this.data.userInfo) {
+          return this.data.userInfo.avatar
+        }
+      },
+      nickname() {
+        if (this.data && this.data.userInfo) {
+          return this.data.userInfo.nickname
+        }
+      },
+      bookList() {
+        return (this.data.bookList) || []
+      }
+    },
     props: {
       data: {
         type: Object
@@ -59,6 +68,7 @@
       gotoShelf() {
       },
       onBookClick() {
+        this.$emit('onClick')
       },
       sign() {
       },

@@ -4,7 +4,7 @@
       <van-icon class="search" name="search" color="#858C96" size="16px"></van-icon>
       <input type="text" class="search-input" :focus="focus" :disabled="disable" :maxlength="limit"
         :placeholder="hotSearch.length === 0 ? '搜索' : hotSearch" v-model="searchWord" @click="onSearchBarClick"
-        @input="onChange" confirm-type="search" @confirm="onConfirm" placeholder-style="color: #ADB4BE"
+        @input="onChange" confirm-type="search" @confirm="onConfirm" placeholder-style="color: #ADB4BE;font-size: 15px;"
       >
       <van-icon class="clear" name="clear" color="#ccc" size="16px" @click="onClearClick"
         v-if="searchWord.length > 0"

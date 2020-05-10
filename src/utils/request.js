@@ -14,9 +14,12 @@ export function get(url, params = {}) {
   const fly = createFly()
   if (fly) {
     return new Promise((resolve, reject) => {
-      fly.get(url, params).then(respose => {
-        console.log(respose)
-        resolve(respose)
+      fly.get(url, params).then(response => {
+        if (response && response.data && response.data.error_code === 0) {
+          resolve(response)
+        } else {
+          reject(response)
+        }
       }).catch(err => {
         handleError(err)
         reject(err)
