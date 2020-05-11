@@ -18,6 +18,11 @@ export function get(url, params = {}) {
         if (response && response.data && response.data.error_code === 0) {
           resolve(response)
         } else {
+          const msg = response.data.msg || '请求失败'
+          mpvue.showToast({
+            title: msg,
+            duration: 2000
+          })
           reject(response)
         }
       }).catch(err => {

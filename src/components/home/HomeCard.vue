@@ -40,11 +40,15 @@
       avatar() {
         if (this.data && this.data.userInfo) {
           return this.data.userInfo.avatar
+        } else {
+          return ''
         }
       },
       nickname() {
         if (this.data && this.data.userInfo) {
           return this.data.userInfo.nickname
+        } else {
+          return ''
         }
       },
       bookList() {

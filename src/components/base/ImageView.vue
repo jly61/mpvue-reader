@@ -47,13 +47,20 @@
       }
     },
     watch: {
+      // 监听src变化，如果src变化，则将isLoading置为true
       src(newValue, preValue) {
+        if (newValue && newValue.length > 0 && newValue !== preValue) {
+          this.$nextTick(() => {
+            this.isLoading = true
+            this.error = false
+          })
+        }
       }
     },
     data() {
       return {
-        isLoading: true,
-        error: false
+        isLoading: true, // 是否处于加载状态
+        error: false // 是否加载失败
       }
     },
     methods: {

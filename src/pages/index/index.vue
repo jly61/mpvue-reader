@@ -1,27 +1,60 @@
 <template>
-  <div class="home">
-    <SearchBar disable @onClick="onSearchBarClick"
-      :hot-search="hotSearch"
-    />
-    <HomeCard :data="homeCard"/>
-    <HomeBanner
-      img="http://www.youbaobao.xyz/book/res/bg.jpg"
-      title="61阅读-随时随地打开阅读"
-      subTitle="立即体验"
-      @onClick="onBannerClick"
-    />
-    <div class="home-book">
-      <HomeBook
-        title="分类"
-        :data="data"
-        row="2"
-        col="2"
-        mode="category"
-        btn-text="更多"
-        @onMoreClick="onMoreClick"
-        @onBookClick="onBookClick"
+  <div>
+    <div class="home" v-if="isAuth">
+      <SearchBar disable @onClick="onSearchBarClick"
+                 :hot-search="hotSearch"
       />
+      <HomeCard :data="homeCard"/>
+      <HomeBanner
+        img="http://www.youbaobao.xyz/book/res/bg.jpg"
+        title="61阅读-随时随地打开阅读"
+        subTitle="立即体验"
+        @onClick="onBannerClick"
+      />
+      <div class="home-book">
+        <HomeBook
+          title="为您推荐"
+          :data="recommend"
+          row="1"
+          col="3"
+          mode="col"
+          btn-text="换一批"
+          @onMoreClick="recommendChange('recommend')"
+          @onBookClick="onBookClick"
+        />
+        <HomeBook
+          title="免费阅读"
+          :data="freeRead"
+          row="2"
+          col="2"
+          mode="row"
+          btn-text="换一批"
+          @onMoreClick="recommendChange('freeRead')"
+          @onBookClick="onBookClick"
+        />
+        <HomeBook
+          title="当前最热"
+          :data="hotBook"
+          row="1"
+          col="4"
+          mode="col"
+          btn-text="换一批"
+          @onMoreClick="recommendChange('hotBook')"
+          @onBookClick="onBookClick"
+        />
+        <HomeBook
+          title="分类"
+          :data="category"
+          row="3"
+          col="2"
+          mode="category"
+          btn-text="查看全部"
+          @onMoreClick="onCategoryMoreClick"
+          @onBookClick="onBookClick"
+        />
+      </div>
     </div>
+    <Auth v-if="!isAuth" @getUserInfo="init"/>
   </div>
 </template>
 
@@ -30,14 +63,17 @@
   import HomeCard from '../../components/home/HomeCard'
   import HomeBanner from '../../components/home/HomeBanner'
   import HomeBook from '../../components/home/HomeBook'
-  import {getHomeData} from '../../api'
+  import Auth from '../../components/base/Auth'
+  import {getHomeData, recommend, freeRead, hotBook} from '../../api'
+  import {getSetting, getUserInfo, setStorageSync, getStorageSync} from '../../utils/wechat'
 
   export default {
     components: {
       SearchBar,
       HomeCard,
       HomeBanner,
-      HomeBook
+      HomeBook,
+      Auth
     },
     data() {
       return {
@@ -47,11 +83,70 @@
         recommend: [],
         freeRead: [],
         hotBook: [],
-        category: []
+        category: [],
+        isAuth: true
       }
     },
-    created() {
-      this.$nextTick(() => {
+    mounted() {
+      this.getHomeData()
+      // 查看是否授权
+      this.init()
+    },
+    methods: {
+      // 授权成功后再次检查授权信息，调用getSetting
+      init() {
+        this.getSetting()
+      },
+      // 授权成功后获取用户信息，不会调用getSetting的onSuccess
+      getUserInfo() {
+        getUserInfo((userInfo) => {
+          console.log(userInfo)
+          setStorageSync('userInfo', userInfo)
+          const openId = getStorageSync('openId')
+          if (!openId || openId.length === 0) {
+            console.log('没有openid')
+          } else {
+            console.log('已获得openid')
+          }
+        }, () => {
+          console.log('failed')
+        })
+      },
+      // 获取用户当前授权设置
+      getSetting() {
+        getSetting('userInfo', () => {
+          this.isAuth = true
+          console.log('授权成功' + this.isAuth)
+          this.getUserInfo()
+        }, () => {
+          this.isAuth = false
+          console.log('还未授权' + this.isAuth)
+        })
+      },
+      // 点击更多
+      recommendChange(key) {
+        switch (key) {
+          case 'recommend':
+            recommend().then(res => {
+              this.recommend = res.data.data
+            })
+            break
+          case 'freeRead':
+            freeRead().then(res => {
+              this.freeRead = res.data.data
+            })
+            break
+          case 'hotBook':
+            hotBook().then(res => {
+              this.hotBook = res.data.data
+            })
+            break
+        }
+      },
+      // 点击分类加载更多
+      onCategoryMoreClick() {},
+      // 获取首页数据
+      getHomeData() {
         getHomeData({
           openId: 666
         }).then(res => {
@@ -79,17 +174,11 @@
               nickname: '米老鼠'
             }
           }
-          console.log(res.data)
         })
-      })
-    },
-    methods: {
+      },
       onSearchBarClick() {
       },
       onBannerClick() {
-      },
-      onMoreClick() {
-        console.log('更多')
       },
       onBookClick() {
         console.log('点击图书')
