@@ -64,8 +64,8 @@
   import HomeBanner from '../../components/home/HomeBanner'
   import HomeBook from '../../components/home/HomeBook'
   import Auth from '../../components/base/Auth'
-  import {getHomeData, recommend, freeRead, hotBook} from '../../api'
-  import {getSetting, getUserInfo, setStorageSync, getStorageSync, getUserOpenId} from '../../utils/wechat'
+  import {getHomeData, recommend, freeRead, hotBook, register} from '../../api'
+  import {getSetting, getUserInfo, setStorageSync, getStorageSync, getUserOpenId, showLoading, hideLoading} from '../../utils/wechat'
 
   export default {
     components: {
@@ -88,9 +88,9 @@
       }
     },
     mounted() {
-      this.getHomeData()
       // 查看是否授权
       this.init()
+      this.getHomeData()
     },
     methods: {
       // 授权成功后再次检查授权信息，调用getSetting
@@ -99,15 +99,18 @@
       },
       // 授权成功后获取用户信息，不会调用getSetting的onSuccess
       getUserInfo() {
+        const onOpenIdComplete = (openId) => {
+          const userInfo = getStorageSync('userInfo')
+          this.getHomeData(openId, userInfo)
+          register(openId, userInfo)
+        }
         getUserInfo((userInfo) => {
-          console.log(userInfo)
           setStorageSync('userInfo', userInfo)
           const openId = getStorageSync('openId')
           if (!openId || openId.length === 0) {
-            console.log('没有openid')
-            getUserOpenId()
+            getUserOpenId(onOpenIdComplete)
           } else {
-            console.log('已获得openid')
+            onOpenIdComplete(openId)
           }
         }, () => {
           console.log('failed')
@@ -117,11 +120,10 @@
       getSetting() {
         getSetting('userInfo', () => {
           this.isAuth = true
-          console.log('授权成功' + this.isAuth)
+          showLoading('正在加载')
           this.getUserInfo()
         }, () => {
           this.isAuth = false
-          console.log('还未授权' + this.isAuth)
         })
       },
       // 点击更多
@@ -147,9 +149,12 @@
       // 点击分类加载更多
       onCategoryMoreClick() {},
       // 获取首页数据
-      getHomeData() {
+      getHomeData(openId, userInfo) {
+        if (!openId) {
+          return
+        }
         getHomeData({
-          openId: 666
+          openId: openId
         }).then(res => {
           const {data: {
             hotSearch: { keyword },
@@ -170,11 +175,9 @@
           this.homeCard = {
             bookList: shelf,
             num: shelfCount,
-            userInfo: {
-              avatar: 'https://www.youbaobao.xyz/mpvue-res/logo.jpg',
-              nickname: '米老鼠'
-            }
+            userInfo: userInfo
           }
+          hideLoading()
         })
       },
       onSearchBarClick() {

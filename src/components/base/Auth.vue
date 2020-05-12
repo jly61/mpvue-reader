@@ -3,7 +3,7 @@
     <div class="auth">
       <div class="auth-info">
         <div class="auth-img">
-          <ImageView src="https://www.youbaobao.xyz/mpvue-res/logo.jpg" round/>
+          <ImageView src="https://www.youbaobao.xyz/mpvue-res/logo.jpg" round  height="100%" mode="scaleToFill"/>
         </div>
         <div class="sub-title">登陆61读书</div>
         <div class="title">全场好书免费读</div>
@@ -54,6 +54,7 @@
         margin-top: 22.5px;
         .auth-img {
           width: 74px;
+          height: 74px;
         }
         .sub-title {
           margin-top: 18px;

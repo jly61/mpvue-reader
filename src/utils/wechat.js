@@ -57,13 +57,14 @@ export function getStorageSync(key) {
   return mpvue.getStorageSync(key)
 }
 
-export function getUserOpenId() {
+export function getUserOpenId(callback) {
   mpvue.login({
     success(res) {
       if (res.code) {
         getOpenId(res.code).then(res2 => {
           const {data: {data: {openid}}} = res2
           setStorageSync('openId', openid)
+          callback(openid)
         }).catch(err => {
           console.log(err)
         })
@@ -75,4 +76,15 @@ export function getUserOpenId() {
       console.log(res) // 抛出异常
     }
   })
+}
+
+// 显示正在加载
+export function showLoading(title) {
+  mpvue.showLoading({
+    title
+  })
+}
+
+export function hideLoading() {
+  mpvue.hideLoading()
 }

@@ -1,4 +1,4 @@
-import {get} from '../utils/request'
+import {get, post} from '../utils/request'
 const API_URL = 'https://test.youbaobao.xyz:18081'
 const APP_ID = 'wx83b29962cc9df518'
 const SECRET = 'e7283d84acf191c73a54040e340ddc0a'
@@ -28,5 +28,14 @@ export function getOpenId(code) {
     appId: APP_ID,
     secret: SECRET,
     code: code
+  })
+}
+
+// 用户注册
+export function register(openId, userInfo) {
+  return post(`${API_URL}/user/register`, {
+    openId,
+    platform: mpvuePlatform,
+    ...userInfo
   })
 }

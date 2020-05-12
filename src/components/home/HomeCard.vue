@@ -3,7 +3,7 @@
     <div class="home-card-inner">
       <div class="user-info">
         <div class="avatar-wrapper">
-          <ImageView :src="avatar" round/>
+          <ImageView :src="avatar" round height="100%" mode="scaleToFill"/>
         </div>
         <div class="nickname">{{nickname}}</div>
         <div class="shelf-text">书架共有{{data.num}}本好书</div>
@@ -39,14 +39,14 @@
     computed: {
       avatar() {
         if (this.data && this.data.userInfo) {
-          return this.data.userInfo.avatar
+          return this.data.userInfo.avatarUrl
         } else {
           return ''
         }
       },
       nickname() {
         if (this.data && this.data.userInfo) {
-          return this.data.userInfo.nickname
+          return this.data.userInfo.nickName
         } else {
           return ''
         }
