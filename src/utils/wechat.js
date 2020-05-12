@@ -1,5 +1,7 @@
 // 微信相关方法
 
+import {getOpenId} from '../api'
+
 /**
  * 获取用户授权
  * @param auth 授权类型, 如userInfo,userLocation
@@ -8,7 +10,7 @@
  */
 export function getSetting(auth, onSuccess, onFail) {
   mpvue.getSetting({
-    success (res) {
+    success(res) {
       if (res.authSetting[`scope.${auth}`]) {
         onSuccess(res)
       } else {
@@ -32,7 +34,7 @@ export function getSetting(auth, onSuccess, onFail) {
 export function getUserInfo(onSuccess, onFail) {
   mpvue.getUserInfo({
     success(res) {
-      let { userInfo } = res
+      let {userInfo} = res
       if (userInfo) {
         onSuccess(userInfo)
       } else {
@@ -53,4 +55,24 @@ export function setStorageSync(key, data) {
 
 export function getStorageSync(key) {
   return mpvue.getStorageSync(key)
+}
+
+export function getUserOpenId() {
+  mpvue.login({
+    success(res) {
+      if (res.code) {
+        getOpenId(res.code).then(res2 => {
+          const {data: {data: {openid}}} = res2
+          setStorageSync('openId', openid)
+        }).catch(err => {
+          console.log(err)
+        })
+      } else {
+        console.log(`error: ` + res)
+      }
+    },
+    fail(res) {
+      console.log(res) // 抛出异常
+    }
+  })
 }

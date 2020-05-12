@@ -65,7 +65,7 @@
   import HomeBook from '../../components/home/HomeBook'
   import Auth from '../../components/base/Auth'
   import {getHomeData, recommend, freeRead, hotBook} from '../../api'
-  import {getSetting, getUserInfo, setStorageSync, getStorageSync} from '../../utils/wechat'
+  import {getSetting, getUserInfo, setStorageSync, getStorageSync, getUserOpenId} from '../../utils/wechat'
 
   export default {
     components: {
@@ -105,6 +105,7 @@
           const openId = getStorageSync('openId')
           if (!openId || openId.length === 0) {
             console.log('没有openid')
+            getUserOpenId()
           } else {
             console.log('已获得openid')
           }
