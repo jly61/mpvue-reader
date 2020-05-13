@@ -39,3 +39,8 @@ export function register(openId, userInfo) {
     ...userInfo
   })
 }
+
+// 关键词搜索
+export function search(params) {
+  return get(`${API_URL}/book/search`, params)
+}
