@@ -181,6 +181,8 @@
         })
       },
       onSearchBarClick() {
+        this.$router.push('/pages/search/main')
+        console.log('searchBarClick')
       },
       onBannerClick() {
       },
