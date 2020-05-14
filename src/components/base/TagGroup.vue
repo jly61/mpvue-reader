@@ -51,11 +51,15 @@
       }
     }
     .tag-group {
+      max-width: 100%;
+      box-sizing: border-box;
       margin-top: 4px;
       display: flex;
       flex-flow: row wrap;
       padding: 10px;
       .tag-group-inner {
+        max-width: 100%;
+        box-sizing: border-box;
         padding: 6px;
       }
     }

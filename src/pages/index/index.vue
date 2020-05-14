@@ -181,8 +181,12 @@
         })
       },
       onSearchBarClick() {
-        this.$router.push('/pages/search/main')
-        console.log('searchBarClick')
+        this.$router.push({
+          path: '/pages/search/main',
+          query: {
+            hotSearch: this.hotSearch
+          }
+        })
       },
       onBannerClick() {
       },

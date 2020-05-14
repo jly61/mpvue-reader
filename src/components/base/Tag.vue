@@ -23,6 +23,8 @@
 
 <style scoped lang="scss">
   .tag-wrapper {
+    width: 100%;
+    box-sizing: border-box;
     display: flex;
     justify-content: center;
     padding: 6px 17px;
