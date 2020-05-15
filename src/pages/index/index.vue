@@ -65,7 +65,15 @@
   import HomeBook from '../../components/home/HomeBook'
   import Auth from '../../components/base/Auth'
   import {getHomeData, recommend, freeRead, hotBook, register} from '../../api'
-  import {getSetting, getUserInfo, setStorageSync, getStorageSync, getUserOpenId, showLoading, hideLoading} from '../../utils/wechat'
+  import {
+    getSetting,
+    getUserInfo,
+    setStorageSync,
+    getStorageSync,
+    getUserOpenId,
+    showLoading,
+    hideLoading
+  } from '../../utils/wechat'
 
   export default {
     components: {
@@ -147,7 +155,8 @@
         }
       },
       // 点击分类加载更多
-      onCategoryMoreClick() {},
+      onCategoryMoreClick() {
+      },
       // 获取首页数据
       getHomeData(openId, userInfo) {
         if (!openId) {
@@ -156,16 +165,18 @@
         getHomeData({
           openId: openId
         }).then(res => {
-          const {data: {
-            hotSearch: { keyword },
-            shelf,
-            banner,
-            recommend,
-            freeRead,
-            hotBook,
-            category,
-            shelfCount
-          }} = res.data
+          const {
+            data: {
+              hotSearch: {keyword},
+              shelf,
+              banner,
+              recommend,
+              freeRead,
+              hotBook,
+              category,
+              shelfCount
+            }
+          } = res.data
           this.hotSearch = keyword
           this.banner = banner
           this.recommend = recommend
@@ -190,8 +201,13 @@
       },
       onBannerClick() {
       },
-      onBookClick() {
-        console.log('点击图书')
+      onBookClick(book) {
+        this.$router.push({
+          path: '/pages/detail/main',
+          query: {
+            fileName: book.fileName
+          }
+        })
       }
     }
   }

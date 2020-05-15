@@ -49,3 +49,8 @@ export function search(params) {
 export function hotSearch() {
   return get(`${API_URL}/book/hot-search`)
 }
+
+// 获取图书详情
+export function bookDetail(params) {
+  return get(`${API_URL}/book/detail`, params)
+}

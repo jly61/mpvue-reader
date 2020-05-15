@@ -6,7 +6,7 @@
         <div class="home-book-col" v-for="(colItem, colIndex) in rowItem" :key="colIndex"
              :style="{flex: '0 0 ' + 100/col + '%'}">
           <div class="book-wrapper" :style="{ flexDirection: mode === HOME_BOOK_MODE.COL ? 'column' : 'row' }"
-               @click="onBookClick"
+               @click="onBookClick(colItem)"
                v-if="mode === HOME_BOOK_MODE.COL || mode === HOME_BOOK_MODE.ROW"
           >
             <ImageView :src="colItem.cover" height="147"/>
@@ -118,8 +118,8 @@
         this.$emit('onMoreClick')
       },
       // 点击图书事件
-      onBookClick() {
-        this.$emit('onBookClick')
+      onBookClick(book) {
+        this.$emit('onBookClick', book)
       }
     }
   }
