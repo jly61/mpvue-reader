@@ -42,8 +42,12 @@
       border-radius: 50%;
     }
     .search-item-info {
+      width: 80%;
       margin-left: 10px;
       .search-item-title {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
         font-size: 14px;
         color: #333333;
         font-weight: 500;

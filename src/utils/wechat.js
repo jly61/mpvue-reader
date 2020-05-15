@@ -88,3 +88,11 @@ export function showLoading(title) {
 export function hideLoading() {
   mpvue.hideLoading()
 }
+
+// 消息提示框
+export function showToast(title, duration) {
+  mpvue.showToast({
+    title,
+    duration
+  })
+}
