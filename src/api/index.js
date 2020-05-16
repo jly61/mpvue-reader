@@ -55,7 +55,31 @@ export function bookDetail(params) {
   return get(`${API_URL}/book/detail`, params)
 }
 
-// 保存评分
+// 保存用户评分
 export function bookRankSave(params) {
   return get(`${API_URL}/book/rank/save`, params)
+}
+
+// 获取图书目录
+export function bookContent(params) {
+  return get(`${API_URL}/book/contents`, params)
+}
+
+// 获取图书是否在书架
+export function bookInShelf(params) {
+  return get(`${API_URL}/book/shelf/get`, params)
+}
+
+// 加入书架
+export function bookShelfSave(params) {
+  return get(`${API_URL}/book/shelf/save`, {
+    shelf: JSON.stringify(params)
+  })
+}
+
+// 移除书架
+export function bookShelfRemove(params) {
+  return get(`${API_URL}/book/shelf/remove`, {
+    shelf: JSON.stringify(params)
+  })
 }

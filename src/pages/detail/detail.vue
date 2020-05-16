@@ -7,7 +7,15 @@
       :rank-num="bookDetail.rankNum"
       :rank-avg="bookDetail.rankAvg"
     />
-    <DetailRate @onRateChange="onRateChange" :rate-value="bookDetail.rank" />
+    <DetailRate
+      @onRateChange="onRateChange"
+      :rate-value="bookDetail.rank"
+    />
+    <DetailContent
+      :contents="contents"
+      @readBook="readBook"
+    />
+    <DetailBottom :is-in-shelf="isInShelf" @handleShelf="handleShelf"/>
   </div>
 </template>
 
@@ -15,23 +23,31 @@
   import DetailBook from '../../components/detail/DetailBook'
   import DetailStat from '../../components/detail/DetailStat'
   import DetailRate from '../../components/detail/DetailRate'
-  import { bookDetail, bookRankSave } from '../../api'
-  import { getStorageSync } from '../../utils/wechat'
+  import DetailContent from '../../components/detail/DetailContent'
+  import DetailBottom from '../../components/detail/DetailBottom'
+  import {bookDetail, bookRankSave, bookContent, bookInShelf, bookShelfSave, bookShelfRemove} from '../../api'
+  import {getStorageSync} from '../../utils/wechat'
 
   export default {
     name: 'detail',
     components: {
       DetailBook,
       DetailStat,
-      DetailRate
+      DetailRate,
+      DetailContent,
+      DetailBottom
     },
     data() {
       return {
-        bookDetail: {}
+        bookDetail: {},
+        contents: [], // 图书目录
+        isInShelf: false
       }
     },
     mounted() {
       this.getBookDetail()
+      this.getBookContent()
+      this.getBookInShelf()
     },
     methods: {
       onRateChange(value) {
@@ -54,7 +70,62 @@
             fileName: fileName
           }).then(res => {
             this.bookDetail = res.data.data
-            console.log(this.bookDetail)
+          })
+        }
+      },
+      getBookContent() {
+        const fileName = this.$route.query.fileName
+        if (fileName) {
+          bookContent({
+            fileName
+          }).then(res => {
+            this.contents = res.data.data
+            console.log(this.contents)
+          })
+        }
+      },
+      readBook(href) {
+        console.log(href)
+      },
+      getBookInShelf() {
+        const openId = getStorageSync('openId')
+        const fileName = this.$route.query.fileName
+        if (openId && fileName) {
+          bookInShelf({
+            openId: openId,
+            fileName: fileName
+          }).then(res => {
+            const data = res.data.data
+            data.length === 0 ? this.isInShelf = false : this.isInShelf = true
+          })
+        }
+      },
+      // 加入/移除书架
+      handleShelf() {
+        const openId = getStorageSync('openId')
+        const fileName = this.$route.query.fileName
+        if (!this.isInShelf) {
+          bookShelfSave({
+            openId: openId,
+            fileName: fileName
+          }).then(res => {
+            this.getBookInShelf()
+          })
+        } else {
+          const _this = this
+          mpvue.showModal({
+            title: '提示',
+            content: `是否将《${this.bookDetail.title}》移除书架`,
+            success(res) {
+              if (res.confirm) {
+                bookShelfRemove({
+                  openId: openId,
+                  fileName: fileName
+                }).then(res => {
+                  _this.getBookInShelf()
+                })
+              }
+            }
           })
         }
       }
