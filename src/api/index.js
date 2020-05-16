@@ -54,3 +54,8 @@ export function hotSearch() {
 export function bookDetail(params) {
   return get(`${API_URL}/book/detail`, params)
 }
+
+// 保存评分
+export function bookRankSave(params) {
+  return get(`${API_URL}/book/rank/save`, params)
+}

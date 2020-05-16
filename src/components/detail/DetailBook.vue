@@ -20,9 +20,6 @@
     },
     components: {
       ImageView
-    },
-    mounted() {
-      console.log(this.book)
     }
   }
 </script>
