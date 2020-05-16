@@ -96,3 +96,10 @@ export function showToast(title, duration) {
     duration
   })
 }
+
+// 动态设置当前页面标题
+export function setNavigationBarTitle(title) {
+  mpvue.setNavigationBarTitle({
+    title
+  })
+}

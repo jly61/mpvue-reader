@@ -28,6 +28,13 @@
     },
     methods: {
       onClick(book) {
+        console.log('点击下面图书')
+        this.$router.push({
+          path: '/pages/detail/main',
+          query: {
+            fileName: book.fileName
+          }
+        })
         this.$emit('onClick', book)
       }
     }
@@ -37,17 +44,21 @@
 <style scoped lang="scss">
   .search-table-wrapper {
     padding: 0 16px;
+
     .search-table {
       display: flex;
       margin: 14px 0;
       align-items: center;
+
       .book-img-wrapper {
         width: 47px;
         height: 68.5px;
       }
+
       .book-info {
         width: 80%;
         margin-left: 15.5px;
+
         .book-title {
           width: 100%;
           font-size: 16px;
@@ -58,12 +69,14 @@
           white-space: nowrap;
           font-weight: 500;
         }
+
         .book-author {
           font-size: 13px;
           color: rgba(0, 0, 0, .65);
           line-height: 18px;
           margin-top: 5px;
         }
+
         .book-category {
           font-size: 13px;
           color: rgba(0, 0, 0, .45);

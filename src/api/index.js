@@ -83,3 +83,8 @@ export function bookShelfRemove(params) {
     shelf: JSON.stringify(params)
   })
 }
+
+// 获取搜索后图书列表
+export function searchList(params) {
+  return get(`${API_URL}/book/search-list`, params)
+}
