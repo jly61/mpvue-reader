@@ -1,6 +1,6 @@
 <template>
   <div class="home-book">
-    <div class="home-book-title">{{title}}</div>
+    <div class="home-book-title" v-if="showTitle">{{title}}</div>
     <div class="home-book-content">
       <div class="home-book-row" v-for="(rowItem, rowIndex) in bookData" :key="rowIndex">
         <div class="home-book-col" v-for="(colItem, colIndex) in rowItem" :key="colIndex"
@@ -22,7 +22,7 @@
               </div>
             </div>
           </div>
-          <div class="category-wrapper" v-else>
+          <div class="category-wrapper" @click="onBookClick(colItem)" v-else>
             <div class="category-title">{{colItem.text}}</div>
             <div class="category-num">{{colItem.num}}本书</div>
             <div class="category-img-wrapper">
@@ -183,6 +183,7 @@
               }
             }
           }
+
           .category-wrapper {
             position: relative;
             display: flex;
@@ -193,6 +194,7 @@
             padding: 13.5px 0 14.5px 16px;
             box-sizing: border-box;
             height: 96px;
+
             .category-title {
               width: 150px;
               overflow: hidden;
@@ -201,16 +203,19 @@
               line-height: 22.5px;
               color: #212832;
             }
+
             .category-num {
               font-size: 12px;
               line-height: 16.5px;
               color: #868686;
             }
+
             .category-img-wrapper {
               position: absolute;
               right: 0;
               bottom: 0;
               height: 60px;
+
               .category-img1 {
                 position: absolute;
                 bottom: -3px;
@@ -218,6 +223,7 @@
                 z-index: 99;
                 width: 48px;
               }
+
               .category-img2 {
                 position: absolute;
                 bottom: -3px;
@@ -247,6 +253,7 @@
       border: 1px solid #EDEEEE;
     }
   }
+
   // 图片组件圆角
   .category-img1 {
     .image {

@@ -15,7 +15,7 @@
       :contents="contents"
       @readBook="readBook"
     />
-    <DetailBottom :is-in-shelf="isInShelf" @handleShelf="handleShelf"/>
+    <DetailBottom :is-in-shelf="isInShelf" @handleShelf="handleShelf" @readBook="readBook"/>
   </div>
 </template>
 
@@ -85,7 +85,23 @@
         }
       },
       readBook(href) {
-        console.log(href)
+        let index = href.indexOf('/')
+        if (index > 0) {
+          href = href.slice(index + 1)
+        }
+        let query = {
+          fileName: this.bookDetail.fileName,
+          opf: this.bookDetail.opf
+        }
+        if (href) {
+          query.navigation = href
+        }
+        if (this.bookDetail && this.bookDetail.fileName) {
+          this.$router.push({
+            path: '/pages/read/main',
+            query
+          })
+        }
       },
       getBookInShelf() {
         const openId = getStorageSync('openId')

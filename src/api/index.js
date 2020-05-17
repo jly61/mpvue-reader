@@ -88,3 +88,13 @@ export function bookShelfRemove(params) {
 export function searchList(params) {
   return get(`${API_URL}/book/search-list`, params)
 }
+
+// 获取全部分类
+export function bookCategory() {
+  return get(`${API_URL}/book/category/list/v2`)
+}
+
+// 获取用户加入天数
+export function userDay(params) {
+  return get(`${API_URL}/user/day`, params)
+}

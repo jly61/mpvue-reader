@@ -13,7 +13,7 @@
       <van-button
         custom-class="detail-btn-read"
         round
-        @click="() => readBook()"
+        @click="readBook"
       >
         阅读
       </van-button>
@@ -34,6 +34,7 @@
       },
       // 阅读电子书
       readBook() {
+        console.log(1)
         this.$emit('readBook')
       }
     }

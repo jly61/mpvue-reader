@@ -50,7 +50,7 @@
           mode="category"
           btn-text="查看全部"
           @onMoreClick="onCategoryMoreClick"
-          @onBookClick="onBookClick"
+          @onBookClick="onCategoryClick"
         />
       </div>
     </div>
@@ -154,8 +154,22 @@
             break
         }
       },
+      // 点击分类图书
+      onCategoryClick(category) {
+        this.$router.push({
+          path: '/pages/list/main',
+          query: {
+            key: 'categoryId',
+            text: category.category,
+            title: category.categoryText
+          }
+        })
+      },
       // 点击分类加载更多
       onCategoryMoreClick() {
+        this.$router.push({
+          path: '/pages/category/main'
+        })
       },
       // 获取首页数据
       getHomeData(openId, userInfo) {
